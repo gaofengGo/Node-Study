@@ -91,21 +91,19 @@
   - Express Web 开发框架
   - ES6
 
-  ## 起步
+## Node 中的 JavaScript
 
-  ## Node 中的 JavaScript
+- EcmaScript
+- 核心模块
+- 第三方模块
+- 用户自定义模块
 
-  - EcmaScript
-  - 核心模块
-  - 第三方模块
-  - 用户自定义模块
+### 核心模块
 
-  ### 核心模块
-  
-  Node 为 JavaScript 提供了很多服务器级别的 API，这些 API 绝大多数都被包装到一个个具名的核心模块中。
-  例如文件操作的`fs`, http服务的`http`, 操作系统的`os`,操作路径的`path`
+Node 为 JavaScript 提供了很多服务器级别的 API，这些 API 绝大多数都被包装到一个个具名的核心模块中。
+例如文件操作的`fs`, http服务的`http`, 操作系统的`os`,操作路径的`path`
 
-  ## Node 中的模块系统
+## Node 中的模块系统
   - ecs
   - 核心模块
     + fs 文件操作
@@ -117,48 +115,75 @@
     + art-template
     + 必须通过 npm 来下载使用
     + 自己写的模块
-  
-  ### 什么是模块化
-  - 文件作用域
-  - 通信规则
-    + 加载
-    + 导出
 
-  ### CommonJs 模块规范
-  在 Node 中的 JavaScript 有一个很重要的概率：模块系统
-  - 模块作用域
-  - 用 require 来加载模块
-  - 用 exports 接口对象来来导出模块中的成员
+### 什么是模块化
+- 文件作用域
+- 通信规则
+  + 加载
+  + 导出
 
-  #### 加载 `require`
-  语法：
-  ```js
-    var 自定义变量 = require('模块') 
-  ```
-  两个作用:
-  - 执行被加载模块中的代码
-  - 得到加载模块中 exports 导出接口对象
+### CommonJs 模块规范
+在 Node 中的 JavaScript 有一个很重要的概率：模块系统
+- 模块作用域
+- 用 require 来加载模块
+- 用 exports 接口对象来来导出模块中的成员
 
-  ### 导出 `exports`
-  - Node 中是模块作用域，默认文件中所有成员只在当前文件模块有效
-  - 对于希望可以被其他模块访问的成员，需要把这些公开的成员挂载到 `exports` 接口对象中
-  - 导出多个成员（必须在对象中）
-  ```js
-  exports.a = 123;
-  exports.b = 'hello';
-  exporst.c = function () {
+#### 加载 `require`
+语法：
+```js
+  var 自定义变量 = require('模块') 
+```
+两个作用:
+- 执行被加载模块中的代码
+- 得到加载模块中 exports 导出接口对象
+
+#### 导出 `exports`
+- Node 中是模块作用域，默认文件中所有成员只在当前文件模块有效
+- 对于希望可以被其他模块访问的成员，需要把这些公开的成员挂载到 `exports` 接口对象中
+- 导出多个成员（必须在对象中）
+```js
+exports.a = 123;
+exports.b = 'hello';
+exporst.c = function () {
+  console.log('ccc');
+};
+// 或者
+module.exports = {
+  a: 123,
+  b: 235,
+  c: function () {
     console.log('ccc');
-  };
-  ```
-  - 导出单个成员（方法，字符串）
-  ```js
-  module.exports = 'hello';
-  ```
-  - 以下情况会覆盖：
-  ```js
-  module.exports = 'hello';
-  
-  module.exports = function( ) {
-    console.log('s')
-  };
-  ```
+  }
+}
+```
+- 导出单个成员（方法，字符串）
+```js
+module.exports = 'hello';
+```
+- 以下情况会覆盖：
+```js
+module.exports = 'hello';
+
+module.exports = function( ) {
+  console.log('s')
+};
+```
+
+### require 方法加载规则
+  - 优先从缓存加载
+  - 判断模块标识
+    + 核心模块
+    + 第三方模块
+    + 自己写的模块
+  - 模块查找机制
+    + 优先从缓存加载
+    + 核心模块
+    + 路径形式的文件模块
+    + 第三方模块
+      - node_modules art-template
+      - node_modules art-template package.json
+      - node_modules art-template package.json main
+      - index.js 是备选项
+      - 进入上一层目录查找 node_modules
+      - 按照这个规则依次查找,直到磁盘根目录还没找到,最后报错: can not find module xxx
+    + 一个项目有且仅有一个 node_modules 在项目的根目录下
