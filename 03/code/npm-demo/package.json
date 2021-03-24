@@ -1,0 +1,16 @@
+{
+  "name": "npm-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "gaofeng",
+  "license": "ISC",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "jquery": "^3.6.0",
+    "react": "^17.0.2"
+  }
+}

@@ -169,7 +169,7 @@ module.exports = function( ) {
 };
 ```
 
-### require 方法加载规则
+#### require 方法加载规则
   - 优先从缓存加载
   - 判断模块标识
     + 核心模块
@@ -187,3 +187,51 @@ module.exports = function( ) {
       - 进入上一层目录查找 node_modules
       - 按照这个规则依次查找,直到磁盘根目录还没找到,最后报错: can not find module xxx
     + 一个项目有且仅有一个 node_modules 在项目的根目录下
+
+### npm 
+
+#### npm 常用命令
+- npm init
+  + npm init -y 可以跳过想到，快速生成
+- npm install
+  + 一次性把 dependencies 选项中的依赖像全部安装
+  + npm i 
+- npm install <包名>
+  + npm i <包名>
+- npm uninstall <包名>
+- npm -help
+  + 查看帮助
+- npm <命令> -help
+  + 查看指定命令的帮助
+  + 例如： npm uninstall -help ,可查看 uninstall 的缩写
+
+#### 解决 npm 被墙问题
+npm 存储包文件的服务器在国外，有时候会被墙，速度很慢，所以我们需要解决这个问题。
+http://npm.taobao.org/ 淘宝的团队把 npm 在国内做了一个备份
+
+安装淘宝的 cnpm:
+```shell
+  npm install --global cnpm
+```
+接下来你安装包的时候把之前的`npm`替换成`cnpm`
+举个例子：
+```shell
+# 走的还是国外的 npm 服务器，速度比较慢
+npm install jquery
+# 使用 cnpm 就会通过淘宝的镜像服务器来下载 jquery
+cnpm install jquery
+```
+如果不想安装`cnpm`又想使用淘宝的服务器来下载
+```shell
+npm install jquery --registry=http://registry.npm.tapbao.org
+```
+但是每一次都手动加参数很麻烦，所以我们可以把这个选项加入配置文件中：
+```shell
+npm config set registry http://registry.npm.tapbao.org
+# 查看 npm 配置信息
+npm config list
+```
+
+### package.json
+每个项目最好都有一个 package.json 文件（包说明文件）
+可以执行命令 `npm init` 自动生成  
