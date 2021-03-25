@@ -1,0 +1,1 @@
+window.alert('http://www.baidu.com')

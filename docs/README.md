@@ -235,3 +235,25 @@ npm config list
 ### package.json
 每个项目最好都有一个 package.json 文件（包说明文件）
 可以执行命令 `npm init` 自动生成  
+
+## 其他
+
+### 文件操作路径和模块路径
+
+文件操作路径
+```
+./data/a.txt 相对于当前目录
+data/a.txt   相当于当前目录
+/data/a.txt  绝对路径，当前文件所处磁盘根目录
+c:/xx/xx     绝对路径
+```
+模块操作路径
+```
+// 这里如果忽略了 . 则也是磁盘根目录
+require('/data/foo.js');
+
+// 相对路径
+require('./data/foo.js');
+
+// 模块加载的路径中相对路径不能省略 ./
+```
