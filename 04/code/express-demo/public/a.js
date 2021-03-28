@@ -1,0 +1,1 @@
+window.alert('水水水水')

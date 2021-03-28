@@ -236,8 +236,184 @@ npm config list
 每个项目最好都有一个 package.json 文件（包说明文件）
 可以执行命令 `npm init` 自动生成  
 
+## Express
+
+### 起步
+
+#### 安装
+```
+npm install express
+```
+
+#### hello world
+```JavaScript
+var express = require('express');
+
+var app = express();
+
+app.get('/', function(req, res) {
+  res.send('hello world');
+})
+
+app.listen(3000, function() {
+  console.log('express run http://127.0.0.1:3000')
+})
+```
+
+#### 基本路由
+路由器
+  + 请求方法
+  + 请求路径
+  + 请求处理函数
+
+get
+```JavaScript
+// 当你以 GET 方法请求 / 的时候，执行对应的处理函数
+app.get('/', function(req, res) {
+  res.send('Go a GET request');
+})
+```
+
+post
+```JavaScript
+// 当你以 POST 方法请求 / 的时候，执行对应的处理函数
+app.post('/', function(req, res) {
+  res.send('Go a POST request');
+})
+```
+#### 静态服务
+```javaScript
+// / public资源
+app.use(express.static('./public/'));
+// / files资源
+app.use(express.static('./files'));
+// /static/xxx
+app.use('/static', express.static('./public'));
+// /public/xxx
+app.use('/public', express.static('./public'));
+```
+
+### 在 Express 中配置使用 art-template 模板引擎
+ [art-template 官方文档](http://aui.github.io/art-template) 
+ 
+ 安装
+ ```javascript
+ npm install art-template
+ npm install express-art-template
+ ```
+
+ 配置
+ ```javascript
+app.engine('art', require('express-art-template'));
+ ```
+
+ 使用
+ ```javascript
+app.get('/', function (req, res) {
+  res.render('index.art', {
+    title: 'hello world'
+  })
+})
+ ```
+
+ 如果希望修改默认的`views`视图渲染存储目录，可以：
+ ```javascript
+ // 注意，第一个参数 views 千万不能写错
+ app.set('views', 目录路径)
+ ```
+
+### 在 Express 获取表单 POST 请求体数据
+Express 内置了一个 API ，可以直接通过 res.query 来获取
+```javaScript
+var params = res.query
+```
+
+### 在 Express 获取表单 POST 请求体数据
+在 Express 中没有内置获取表单 POST 请求体的 API，这里我们需要引用第三方包
+安装:
+```
+npm install body-parser
+```
+配置：
+```javascript
+var express = require('express')
+var bodyParser = require('body-parser')
+
+var app = express()
+
+// 配置 body-parser
+// 只要加入这个配置，则会在 req 请求对象上多出来一个属性：body
+// 也就是说你可以直接通过 req.body 来获取表单 POST 请求体数据
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+```
+
+使用
+```javascript
+app.use(function (req, res) {
+  res.setHeader('Content-Type', 'text/plain')
+  res.write('you posted:\n')
+  // 可以通过 req。boy 来获取表单 POST 请求体数据
+  res.end(JSON.stringify(req.body, null, 2))
+})
+```
+
+#### 设计操作数据的 API 模块
+```javascript
+/**
+ * student.js
+ * 数据操作文件模块
+ * 职责：操作文件中的数据，只处理数据，不关心业务
+ */
+
+/**
+ * 获取所有学生列表
+ */
+exports.find = () => {
+
+}
+
+/**
+ * 添加保存学生
+ */
+exports.save = () => {
+  
+}
+
+/**
+ * 更新学生
+ */
+exports.update = () => {
+  
+}
+
+/**
+ * 删除学生
+ */
+exports.delete = () => {
+  
+}
+```
+
 ## 其他
 
+### 修改完代码自动重启
+
+我们这里可以使用一个第三方命名工具`nodemon`来帮我们解决频繁修改代码重启服务器问题
+`nodemon`是一个基于 Node.js 开发的一个第三方命令行工具，使用需要独立安装
+```
+npm install -g nodemon
+```
+安装完毕之后，使用：
+```
+node app.js
+
+// 使用 nodemon
+```
+只是通过`nodemon app.js`启动的服务，则它会监视你的文件变化，当文件发生变化的时候，自动帮你重启服务
 ### 文件操作路径和模块路径
 
 文件操作路径
