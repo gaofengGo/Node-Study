@@ -235,7 +235,20 @@ npm config list
 ### package.json
 每个项目最好都有一个 package.json 文件（包说明文件）
 可以执行命令 `npm init` 自动生成  
-
+#### package.json 和 package-lock.json
+npm 5 以前是没有`package-lock.json`的
+npm 5 以后才加入的
+当你安装包的时候`npm`都会生成或更新`package-lock.json`这个文件
+- npm 5 以后的不需要加`--save`参数，它会自动保存依赖信息
+- 当你安装包的时候，会自动生成或更新`package-lock.json`这个文件
+- `package-lock.json`这个文件会保存`node_modules`中所有包的信息（版本、依赖）
+  + 这样的话重新`npm install`的时候速度就可以提升
+- 从文件上看有个`lock`称之为锁
+  + 这个`lock`是用来锁定版本的
+  + 如果项目依赖了`1.1.1`版本
+  + 如果你重新 install 其实会下载最新版本，而不是 1.1.1
+  + 我们的目的就是希望可以锁住 1.1.1 这个版本
+  + 所以这个`package-lock.json`这个文件的另一个作用就是锁定版本号，防止依赖自动升级
 ## Express
 
 ### 起步
@@ -361,6 +374,11 @@ app.use(function (req, res) {
 })
 ```
 
+### CRUD
+
+#### 模块化思想
+模块如何划分：
+- 职责要单一
 #### 设计操作数据的 API 模块
 ```javascript
 /**
@@ -398,6 +416,33 @@ exports.delete = () => {
 }
 ```
 
+#### 自己编写的步骤
+- 处理模板
+- 配置开放静态资源
+- 配置模板引擎
+- 简单路由：/students 渲染静态页出来
+- 路由设计
+- 提取路由模块
+- 由于接下来一些裂的业务操作都需要出来文件数据，所以我们需要封装 student.js
+- 先写好 stuendt.js 文件结构
+- 实现具体功能
+
+#### 回调函数
+基于原生 XMLHttpRequest 封装 get 方法
+```javascript
+function get(url, callback) {
+  var oReq = new XMLHttpRequest();
+  // 当请求加载成功之后要调用指定的函数
+  oReq.onload = () => {
+    // 我需要 oReq.responseText
+    callback(oReq.responseText);
+  };
+  oReq.open("get", "data.json", true);
+  oReq.send();
+}
+
+get('/api/rpc', data => console.log(data))
+```
 ## 其他
 
 ### 修改完代码自动重启

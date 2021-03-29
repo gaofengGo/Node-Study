@@ -34,13 +34,6 @@ router.get('/students', function (req, res) {
   //     students,
   //   });
   // })
-  Students.updateById({
-    id: 4, name: "gg", gender: 1, age: 28, hobbies: "吃饭"
-  }, err => {
-    if (err) {
-      return res.status(500).send('Server error.')
-    }
-  })
 
   Students.find((err, students) => {
     if (err) {
@@ -86,7 +79,6 @@ router.get('/students/edit', function (req, res) {
     if (err) {
       return res.status(500).send('findById error.')
     }
-    console.log('student:', student)
     res.render('edit.html', {
       student,
     })
