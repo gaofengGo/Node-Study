@@ -507,7 +507,13 @@ exit
   - 查看当前操作的数据库
 - `use <数据名称>`
   - 切换到指定的数据（如果没有会新建）
+- `show collections`
+  - 展示所有集合
 - 插入数据
+
+### 在 Node 中如何操作 MongoDB 数据
+#### 使用官方的`mongodb`包来操作
+> https://github.com/
 
 
 ## 其他
